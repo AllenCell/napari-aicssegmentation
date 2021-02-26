@@ -14,10 +14,10 @@ class AllenCellStructureSegmenter(QWidget):
         super().__init__()
         self.viewer = napari_viewer
 
-        btn = QPushButton("Apply Whole Sec61b Workflow")
+        btn = QPushButton("Sec61b")
         btn.clicked.connect(self.apply_workflow)
 
-        desc = QLabel("Click button to smooth the current viewport image, higher numbers blur more. Result is displayed as a new channel.")
+        desc = QLabel("Click button to apple the whole sec61b workflow. Result is displayed as a new channel.")
         desc.setWordWrap(True)
 
         self.setLayout(QHBoxLayout())
