@@ -3,6 +3,7 @@
 from aicssegmentation.core.pre_processing_utils import image_smoothing_gaussian_3d
 from napari_plugin_engine import napari_hook_implementation
 from qtpy.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel, QMessageBox
+from aicssegmentation.structure_wrapper_config.structure_config_utils import load_workflow_config, apply_on_single_image_with_config
 
 """
 The class name here gets converted to title case and gets displayed as both the title of the
@@ -13,8 +14,8 @@ class AllenCellStructureSegmenter(QWidget):
         super().__init__()
         self.viewer = napari_viewer
 
-        btn = QPushButton("Gaussian kernel size = 3.0")
-        btn.clicked.connect(self.smooth_image)
+        btn = QPushButton("Apply Whole Sec61b Workflow")
+        btn.clicked.connect(self.apply_workflow)
 
         desc = QLabel("Click button to smooth the current viewport image, higher numbers blur more. Result is displayed as a new channel.")
         desc.setWordWrap(True)
@@ -31,6 +32,8 @@ class AllenCellStructureSegmenter(QWidget):
 
             # Adding the image to the viewer
             self.viewer.add_image(image_smoothing_gaussian_3d(self.viewer.layers[0].data, sigma=3.0), name=name)
+
+
         else:
             self.show_message_box("Error: No Image", "Load an image before running guassian blur")
 
@@ -49,6 +52,14 @@ class AllenCellStructureSegmenter(QWidget):
         return msg.exec()
 
 
+    def apply_workflow(self):
+        cfg = load_workflow_config("sec61b")
+        segmented_image = apply_on_single_image_with_config(self.viewer.layers[0].data, cfg)
+        self.viewer.add_image(segmented_image, name="sec61b")
+
+
+
 @napari_hook_implementation
 def napari_experimental_provide_dock_widget():
     return AllenCellStructureSegmenter
+
