@@ -4,6 +4,7 @@ from aicssegmentation.core.pre_processing_utils import image_smoothing_gaussian_
 from napari_plugin_engine import napari_hook_implementation
 from qtpy.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel, QMessageBox
 from aicssegmentation.structure_wrapper_config.structure_config_utils import load_workflow_config, apply_on_single_image_with_config
+from aicssegmentation.structure_wrapper import WorkflowStep, WorkflowEngine
 
 """
 The class name here gets converted to title case and gets displayed as both the title of the
@@ -53,9 +54,9 @@ class AllenCellStructureSegmenter(QWidget):
 
 
     def apply_workflow(self):
-        cfg = load_workflow_config("sec61b")
-        segmented_image = apply_on_single_image_with_config(self.viewer.layers[0].data, cfg)
-        self.viewer.add_image(segmented_image, name="sec61b")
+        engine = WorkflowEngine.WorkflowEngine("sec61b", self.viewer.layers[0].data)
+        engine.execute_all()
+        self.viewer.add_image(engine.get_most_recent_result(), name="sec61b")
 
 
 
