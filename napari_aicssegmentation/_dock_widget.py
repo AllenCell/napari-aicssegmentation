@@ -15,7 +15,7 @@ class AllenCellStructureSegmenter(QWidget):
         super().__init__()
         self.viewer = napari_viewer
 
-        btn = QPushButton("Sec61b")
+        btn = QPushButton("lmnb1_interphase")
         btn.clicked.connect(self.apply_workflow)
 
         desc = QLabel("Click button to apple the whole sec61b workflow. Result is displayed as a new channel.")
@@ -54,9 +54,9 @@ class AllenCellStructureSegmenter(QWidget):
 
 
     def apply_workflow(self):
-        engine = WorkflowEngine.WorkflowEngine("sec61b", self.viewer.layers[0].data)
+        engine = WorkflowEngine.WorkflowEngine("lmnb1_interphase", self.viewer.layers[0].data)
         engine.execute_all()
-        self.viewer.add_image(engine.get_most_recent_result(), name="sec61b")
+        self.viewer.add_image(engine.get_most_recent_result(), name="lmnb1_interphase")
 
 
 
