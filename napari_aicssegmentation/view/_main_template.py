@@ -67,8 +67,12 @@ class MainTemplate(ViewTemplate):
         test_dict["function"] = "intensity_normalization_with_bound"
         test_dict["parent"] = 0
         test_dict["parameter"] = {"scaling_param": [3, 15]}
+
         workflow_step = WorkflowStep(test_dict)
         page.layout().addWidget(generate_workflow_widget(workflow_step))
+
+
+
         est_dict = dict()
         test_dict["function"] = "size_filter"
         test_dict["parent"] = 0
